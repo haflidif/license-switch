@@ -386,3 +386,34 @@ For issues or questions:
 4. **Ensure proper Office 365 admin permissions**
 5. **Test with Get-Office365Licenses.ps1** first
 6. **Use -WhatIf and -Verbose** for diagnostics
+
+## Authors
+
+**Developed and authored by [Haflidi Fridthjofsson](https://github.com/haflidif) in companionship with GitHub Copilot**
+
+This solution represents a collaborative effort between human expertise in PowerShell and Microsoft 365 administration, enhanced by AI assistance for code optimization, documentation, and best practices.
+
+## Disclaimer
+
+**⚠️ Important Notice**
+
+The code examples in this repository are provided **"as-is"** and can be used in production environments at your own responsibility. They come with **no warranty of any kind**. Use them **at your own risk**. 
+
+The authors are **not responsible for any issues, damages, or costs** that may arise from using these code examples. This includes but is not limited to:
+
+- Data loss or corruption
+- Service disruptions
+- License assignment errors
+- Billing or cost implications
+- Security vulnerabilities
+- Compliance violations
+
+**Recommendations:**
+- Always test thoroughly in a non-production environment first
+- Use the `-WhatIf` parameter to preview changes
+- Enable test mode (`-TestMode`) for initial validation
+- Ensure proper backups and rollback procedures
+- Verify admin permissions and organizational policies
+- Review and understand all code before execution
+
+**By using this software, you acknowledge and agree to these terms.**
