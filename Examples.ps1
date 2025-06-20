@@ -28,7 +28,7 @@
 # Example 3: Office 365 E5 to Microsoft 365 E5  
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "ENTERPRISEPREMIUM" -NewLicenseSku "SPE_E5" -WhatIf
 
-# === Using SKU IDs (GUID Method - Perfect for Automation) ===
+# === Using SKU IDs (GUID Method - Perfect for Scripting) ===
 
 # Example 1: Same switch using exact GUIDs
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01" -WhatIf
@@ -65,7 +65,7 @@
 # Test with specific number of users (10 users preview)
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -MaxTestUsers 10 -WhatIf
 
-# Test Mode with SKU IDs (automation testing)
+# Test Mode with SKU IDs (scripting testing)
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01" -TestMode -MaxTestUsers 3 -WhatIf
 
 # Test Mode in specific tenant
@@ -205,16 +205,6 @@ Legacy to Modern              | ENTERPRISEPREMIUM              | SPE_E5
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "ENTERPRISEPACK" -NewLicenseSku "SPE_E3"
 
 # ================================================
-# AZURE AUTOMATION INTEGRATION
-# ================================================
-
-# For Azure Automation scenarios, use the runbook.ps1:
-# - Copy runbook.ps1 to Azure Automation
-# - Set up managed identity permissions
-# - Schedule license transitions
-# - Monitor through Azure Automation logs
-
-# ================================================
 # MULTI-TENANT SCENARIOS
 # ================================================
 
@@ -263,10 +253,10 @@ foreach ($tenant in $tenants) {
 #>
 
 # ================================================
-# ADVANCED AUTOMATION EXAMPLES
+# ADVANCED SCRIPTING EXAMPLES
 # ================================================
 
-# Example 1: Automated license switching with error handling
+# Example 1: Manual license switching with error handling
 try {
     # Preview first
     $whatIfResult = .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01" -WhatIf

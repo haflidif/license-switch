@@ -91,7 +91,7 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 # Using SKU Part Numbers
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK"
 
-# Using SKU IDs for automation scenarios
+# Using SKU IDs for scripting scenarios
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01"
 ```
 
@@ -201,7 +201,7 @@ The script now uses Microsoft Graph's server-side filtering for **dramatically i
 
 ### Method 2: SKU IDs (GUIDs)  
 - **Exact GUIDs** like `"18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e"`
-- **Perfect for automation and scripting**
+- **Perfect for scripting and batch operations**
 - **Eliminates any ambiguity**
 
 ## Process Flow
@@ -344,16 +344,9 @@ ERROR: Invalid license SKU format
 |--------|---------|--------------|
 | `Switch-Office365Licenses.ps1` | **Main license switching script** | Dual input, performance optimized, verbose mode |
 | `Get-Office365Licenses.ps1` | **License discovery and inspection** | Multi-tenant, service plan details, extra commands |
-| `runbook.ps1` | **Azure Automation integration** | Automated license switching in Azure |
-| `Examples.ps1` | **Usage examples and scenarios** | Real-world automation examples |
+| `Examples.ps1` | **Usage examples and scenarios** | Real-world scripting examples |
 
 ## 🔧 Integration Options
-
-### Azure Automation
-Use `runbook.ps1` for automated license switching:
-- Scheduled license transitions
-- Automated compliance workflows  
-- Integration with other Azure services
 
 ### Multi-Tenant Management
 Use tenant-specific parameters:
