@@ -42,8 +42,8 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 | `TestMode` | No | Enable test mode for limited user processing | `-TestMode` |
 | `MaxTestUsers` | No | Max users to process in test mode (default: 5) | `-MaxTestUsers 10` |
 | **Multi-Tenant Parameters** | | | |
-| `TenantId` | No | Azure AD Tenant ID (GUID) to connect to | `"12345678-1234-1234-1234-123456789012"` |
-| `TenantDomain` | No | Azure AD Tenant domain to connect to | `"contoso.onmicrosoft.com"` |
+| `TenantId` | No | Entra ID Tenant ID (GUID) to connect to | `"12345678-1234-1234-1234-123456789012"` |
+| `TenantDomain` | No | Entra ID Tenant domain to connect to | `"contoso.onmicrosoft.com"` |
 
 *Note: Use either SkuPartNumber parameters OR SkuId parameters, not both.*
 

@@ -17,9 +17,9 @@
 .PARAMETER WhatIf
     Preview changes without making them
 .PARAMETER TenantId
-    The Azure AD Tenant ID (GUID) to connect to. Optional - uses default tenant if not specified.
+    The Entra ID Tenant ID (GUID) to connect to. Optional - uses default tenant if not specified.
 .PARAMETER TenantDomain
-    The Azure AD Tenant domain (e.g., contoso.onmicrosoft.com) to connect to. Alternative to TenantId.
+    The Entra ID Tenant domain (e.g., contoso.onmicrosoft.com) to connect to. Alternative to TenantId.
 .PARAMETER TestMode
     Enable test mode to process only a limited number of users for validation before full deployment.
 .PARAMETER MaxTestUsers

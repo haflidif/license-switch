@@ -6,9 +6,9 @@
     Office 365 licenses with their SKUs, making it easier to identify the
     correct license names for the main switching script.
 .PARAMETER TenantId
-    The Azure AD Tenant ID (GUID) to connect to. Optional - if not provided, will use the default tenant.
+    The Entra ID Tenant ID (GUID) to connect to. Optional - if not provided, will use the default tenant.
 .PARAMETER TenantDomain
-    The Azure AD Tenant domain (e.g., contoso.onmicrosoft.com) to connect to. Alternative to TenantId.
+    The Entra ID Tenant domain (e.g., contoso.onmicrosoft.com) to connect to. Alternative to TenantId.
 .EXAMPLE
     .\Get-Office365Licenses.ps1
 .EXAMPLE
