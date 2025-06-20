@@ -29,8 +29,8 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 | Parameter | Required | Description | Example |
 |-----------|----------|-------------|---------|
 | **SkuPartNumber Mode** | | | |
-| `ExpiringLicenseSku` | Yes* | SKU Part Number of license to remove | `"Microsoft_365_E5_(no_Teams)"` |
-| `NewLicenseSku` | Yes* | SKU Part Number of license to assign | `"Microsoft_Teams_Enterprise_New"` |
+| `ExpiringLicenseSku` | Yes* | SKU Part Number of license to remove | `"STANDARDPACK"` |
+| `NewLicenseSku` | Yes* | SKU Part Number of license to assign | `"ENTERPRISEPACK"` |
 | **SkuId (GUID) Mode** | | | |
 | `ExpiringLicenseSkuId` | Yes* | SKU ID (GUID) of license to remove | `"18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e"` |
 | `NewLicenseSkuId` | Yes* | SKU ID (GUID) of license to assign | `"7e31c0d9-9551-471d-836f-32ee72be4a01"` |
@@ -63,10 +63,10 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 **Using SKU Part Numbers (User-Friendly)**
 ```powershell
 # Quiet preview (summary only)
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -WhatIf
 
 # Verbose preview (show each user)
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf -Verbose
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -WhatIf -Verbose
 ```
 
 **Using SKU IDs (GUIDs)**
@@ -78,10 +78,10 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 **Multi-Tenant Preview**
 ```powershell
 # Preview in specific tenant using Tenant ID
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012" -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TenantId "12345678-1234-1234-1234-123456789012" -WhatIf
 
 # Preview in specific tenant using domain
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com" -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TenantDomain "contoso.onmicrosoft.com" -WhatIf
 ```
 
 ### ⚡ 3. Execute License Switch
@@ -89,7 +89,7 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 **Standard Execution**
 ```powershell
 # Using SKU Part Numbers
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New"
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK"
 
 # Using SKU IDs for automation scenarios
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01"
@@ -98,16 +98,16 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 **Multi-Tenant Execution**
 ```powershell
 # Execute in specific tenant using Tenant ID
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012"
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TenantId "12345678-1234-1234-1234-123456789012"
 
 # Execute in specific tenant using domain
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com"
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TenantDomain "contoso.onmicrosoft.com"
 ```
 
 **With Verbose Output**
 ```powershell
 # Show detailed processing for each user
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -Verbose
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -Verbose
 ```
 
 ### 🧪 3.5. Test Mode (HIGHLY RECOMMENDED for Large Environments)
@@ -121,25 +121,25 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 **Test Mode with WhatIf (Preview Only)**
 ```powershell
 # Test with default 5 users (safest approach)
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -WhatIf
 
 # Test with specific number of users (10 users preview)
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 10 -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -MaxTestUsers 10 -WhatIf
 
 # Test Mode in specific tenant
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012" -TestMode -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TenantId "12345678-1234-1234-1234-123456789012" -TestMode -WhatIf
 ```
 
 **Test Mode with Actual Execution (Recommended Validation)**
 ```powershell
 # Execute test with 3 users (recommended for initial validation)
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 3
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -MaxTestUsers 3
 
 # Execute test with verbose output for detailed validation
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 5 -Verbose
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -MaxTestUsers 5 -Verbose
 
 # Safe behavior: If you request more users than available, it uses all available users
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 1000 -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -MaxTestUsers 1000 -WhatIf
 ```
 
 **Test Mode Parameters**
@@ -151,7 +151,7 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 ### 📁 4. Custom Export Path
 ```powershell
 # Specify custom export location
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -ExportPath "C:\Reports\LicenseSwitch_$(Get-Date -Format 'yyyyMMdd').csv"
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -ExportPath "C:\Reports\LicenseSwitch_$(Get-Date -Format 'yyyyMMdd').csv"
 ```
 
 ### 🏢 5. Multi-Tenant Operations
@@ -181,8 +181,8 @@ The script now uses Microsoft Graph's server-side filtering for **dramatically i
 
 | License Name | SKU Part Number | Example SKU ID |
 |--------------|-----------------|----------------|
-| Microsoft 365 E5 (no Teams) | `Microsoft_365_E5_(no_Teams)` | `18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e` |
-| Microsoft Teams Enterprise | `Microsoft_Teams_Enterprise_New` | `7e31c0d9-9551-471d-836f-32ee72be4a01` |
+| Microsoft 365 Business Standard | `STANDARDPACK` | `f245ecc8-75af-4f8e-b61f-27d8114de5f3` |
+| Office 365 Enterprise E3 | `ENTERPRISEPACK` | `6fd2c87f-b296-42f0-b197-1e91e994b900` |
 | Microsoft Entra Suite | `Microsoft_Entra_Suite` | `f9602137-2203-447b-9fff-41b36e08ce5d` |
 | Office 365 E3 | `ENTERPRISEPACK` | `6fd2c87f-b296-42f0-b197-1e91e994b900` |
 | Office 365 E5 | `ENTERPRISEPREMIUM` | `c7df2760-2c81-4ef7-b578-5b5392b571df` |
@@ -195,7 +195,7 @@ The script now uses Microsoft Graph's server-side filtering for **dramatically i
 ## 🔄 Input Methods
 
 ### Method 1: SKU Part Numbers (Recommended)
-- **User-friendly names** like `"Microsoft_365_E5_(no_Teams)"`
+- **User-friendly names** like `"STANDARDPACK"`
 - **Easier to read and understand**
 - **Less prone to typos in manual operations**
 

@@ -27,7 +27,7 @@
     If the specified number is higher than available users, all available users will be processed.
 .EXAMPLE
     # Using SkuPartNumber (user-friendly names) - Default method
-    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -WhatIf
 
 .EXAMPLE
     # Using SkuId (GUIDs) - Direct method
@@ -35,31 +35,31 @@
 
 .EXAMPLE
     # Using verbose mode to see detailed processing (shows individual user messages)
-    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf -Verbose
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -WhatIf -Verbose
 
 .EXAMPLE
     # Multi-tenant: Connect to specific tenant using Tenant ID
-    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012" -WhatIf
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TenantId "12345678-1234-1234-1234-123456789012" -WhatIf
 
 .EXAMPLE
     # Multi-tenant: Connect to specific tenant using domain
-    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com" -WhatIf
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TenantDomain "contoso.onmicrosoft.com" -WhatIf
 
 .EXAMPLE
     # Test Mode: Validate functionality on only 5 users before full deployment
-    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -WhatIf
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -WhatIf
 
 .EXAMPLE
     # Test Mode: Test with specific number of users (e.g., 10 users)
-    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 10 -WhatIf
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -MaxTestUsers 10 -WhatIf
 
 .EXAMPLE
     # Test Mode: Actual execution on limited users for validation
-    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 3
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -MaxTestUsers 3
 
 .EXAMPLE
     # Test Mode: Handle case where requested users > available users (safe behavior)
-    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 1000
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -MaxTestUsers 1000
 #>
 
 [CmdletBinding(DefaultParameterSetName = 'BySkuPartNumber')]

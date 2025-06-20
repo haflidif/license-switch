@@ -20,7 +20,7 @@
 # === Using SKU Part Numbers (User-Friendly Method) ===
 
 # Example 1: Microsoft 365 E5 (no Teams) to Teams Enterprise
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -WhatIf
 
 # Example 2: Office 365 E3 to Microsoft 365 E3
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "ENTERPRISEPACK" -NewLicenseSku "SPE_E3" -WhatIf
@@ -39,15 +39,15 @@
 # === Verbose Preview (Show Each User) ===
 
 # Detailed preview showing individual user processing
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf -Verbose
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -WhatIf -Verbose
 
 # === Multi-Tenant Preview Examples ===
 
 # Preview in specific tenant using Tenant ID
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012" -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TenantId "12345678-1234-1234-1234-123456789012" -WhatIf
 
 # Preview in specific tenant using domain  
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com" -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TenantDomain "contoso.onmicrosoft.com" -WhatIf
 
 # Preview with SKU IDs in specific tenant
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01" -TenantId "12345678-1234-1234-1234-123456789012" -WhatIf
@@ -60,37 +60,37 @@
 # Perfect for validating functionality before processing thousands of users!
 
 # Test with default 5 users (safest approach)
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -WhatIf
 
 # Test with specific number of users (10 users preview)
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 10 -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -MaxTestUsers 10 -WhatIf
 
 # Test Mode with SKU IDs (automation testing)
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01" -TestMode -MaxTestUsers 3 -WhatIf
 
 # Test Mode in specific tenant
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012" -TestMode -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TenantId "12345678-1234-1234-1234-123456789012" -TestMode -WhatIf
 
 # === Actual Test Execution (Limited Users) ===
 # Execute the license switch on a small subset to validate functionality
 
 # Execute test with 3 users (recommended for initial validation)
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 3
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -MaxTestUsers 3
 
 # Execute test with verbose output for detailed validation
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 5 -Verbose
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -MaxTestUsers 5 -Verbose
 
 # Execute test in specific tenant with 2 users
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com" -TestMode -MaxTestUsers 2
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TenantDomain "contoso.onmicrosoft.com" -TestMode -MaxTestUsers 2
 
 # === Safe Behavior: Requested Users > Available Users ===
 # When you specify more test users than actually exist, it gracefully uses all available users
 
 # If only 100 users exist but you request 120, it will test all 100 users (safe behavior)
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 120 -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -MaxTestUsers 120 -WhatIf
 
 # Large number for "test all available users" approach
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 1000 -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TestMode -MaxTestUsers 1000 -WhatIf
 
 # ================================================
 # STEP 3: Execute License Switches  
@@ -99,7 +99,7 @@
 # === Standard Execution (Clean Output) ===
 
 # Example 1: Execute M365 E5 (no Teams) to Teams Enterprise
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New"
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK"
 
 # Example 2: Execute using SKU IDs (great for automated scripts)
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01"
@@ -107,10 +107,10 @@
 # === Multi-Tenant Execution ===
 
 # Execute in specific tenant using Tenant ID
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012"
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TenantId "12345678-1234-1234-1234-123456789012"
 
 # Execute in specific tenant using domain
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com"
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -TenantDomain "contoso.onmicrosoft.com"
 
 # Execute using SKU IDs in specific tenant
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01" -TenantId "12345678-1234-1234-1234-123456789012"
@@ -118,12 +118,12 @@
 # === Verbose Execution (Detailed Output) ===
 
 # Execute with detailed processing information
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -Verbose
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -Verbose
 
 # === Custom Export Paths ===
 
 # Execute with custom export location
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -ExportPath "C:\Reports\LicenseSwitch_$(Get-Date -Format 'yyyyMMdd_HHmm').csv"
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -ExportPath "C:\Reports\LicenseSwitch_$(Get-Date -Format 'yyyyMMdd_HHmm').csv"
 
 # ================================================
 # ENHANCED LICENSE MAPPINGS (2025)
@@ -134,8 +134,8 @@
 
 License Name                    | SKU Part Number                | Example SKU ID (GUID)
 ------------------------------- | ------------------------------ | --------------------------------------
-Microsoft 365 E5 (no Teams)    | Microsoft_365_E5_(no_Teams)    | 18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e
-Microsoft Teams Enterprise     | Microsoft_Teams_Enterprise_New | 7e31c0d9-9551-471d-836f-32ee72be4a01  
+Microsoft 365 Business Standard| STANDARDPACK                   | f245ecc8-75af-4f8e-b61f-27d8114de5f3
+Office 365 Enterprise E3       | ENTERPRISEPACK                 | 6fd2c87f-b296-42f0-b197-1e91e994b900
 Microsoft Entra Suite          | Microsoft_Entra_Suite          | f9602137-2203-447b-9fff-41b36e08ce5d
 Office 365 E3                  | ENTERPRISEPACK                 | 6fd2c87f-b296-42f0-b197-1e91e994b900
 Office 365 E5                  | ENTERPRISEPREMIUM              | c7df2760-2c81-4ef7-b578-5b5392b571df
@@ -147,7 +147,7 @@ Microsoft 365 Business Premium | SPB                            | cbdc14ab-d96c-
 
 Scenario                        | From                          | To
 ------------------------------- | ----------------------------- | -------------------------------
-Teams Enablement               | Microsoft_365_E5_(no_Teams)   | Microsoft_Teams_Enterprise_New
+Standard to Enterprise         | STANDARDPACK                  | ENTERPRISEPACK
 Office to Microsoft 365       | ENTERPRISEPACK                | SPE_E3
 License Upgrades               | SPE_E3                        | SPE_E5  
 Business to Enterprise         | SPB                           | SPE_E3
@@ -165,7 +165,7 @@ Legacy to Modern              | ENTERPRISEPREMIUM              | SPE_E5
 # "Using optimized server-side filtering for better performance..."
 
 # For large tenants, monitor the progress:
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf -Verbose
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -WhatIf -Verbose
 
 # ================================================
 # TROUBLESHOOTING & DIAGNOSTICS
@@ -197,11 +197,11 @@ Legacy to Modern              | ENTERPRISEPREMIUM              | SPE_E5
 # Sequential processing for multiple license types:
 
 # Phase 1: Preview all changes first
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -WhatIf
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "ENTERPRISEPACK" -NewLicenseSku "SPE_E3" -WhatIf
 
 # Phase 2: Execute changes after verification
-.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New"
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK"
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "ENTERPRISEPACK" -NewLicenseSku "SPE_E3"
 
 # ================================================
@@ -285,7 +285,7 @@ $teamsLicense = $licenses | Where-Object {$_.SkuPartNumber -eq "Microsoft_Teams_
 
 if ($teamsLicense.Available -gt 0) {
     Write-Host "Teams licenses available: $($teamsLicense.Available)" -ForegroundColor Green
-    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "STANDARDPACK" -NewLicenseSku "ENTERPRISEPACK" -WhatIf
 } else {
-    Write-Host "No Teams licenses available. Purchase more licenses first." -ForegroundColor Red
+    Write-Host "No licenses available. Purchase more licenses first." -ForegroundColor Red
 }
