@@ -1,7 +1,3 @@
 # Ignore all csv files created by the script, to prevent them from being committed
 # This is useful for keeping the repository clean and avoiding committing temporary or output files.
 *.csv
-
-# Ignoring specific powerShell runbook files
-runbook.ps1
-old-runbook.ps1
