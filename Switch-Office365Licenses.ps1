@@ -23,6 +23,10 @@
 .EXAMPLE
     # Using SkuId (GUIDs) - Direct method
     .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01" -WhatIf
+
+.EXAMPLE
+    # Using verbose mode to see detailed processing (shows individual user messages)
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf -Verbose
 #>
 
 [CmdletBinding(DefaultParameterSetName = 'BySkuPartNumber')]
@@ -306,12 +310,15 @@ function Switch-UserLicense {
         [string]$UserPrincipalName,
         [string]$ExpiringLicenseSkuId,
         [string]$NewLicenseSkuId,
-        [bool]$WhatIfMode = $false
+        [bool]$WhatIfMode = $false,
+        [bool]$VerboseMode = $false
     )
     
     try {
         if ($WhatIfMode) {
-            Write-ColorOutput "WHATIF: Would switch license for $UserPrincipalName" "Yellow"
+            if ($VerboseMode) {
+                Write-ColorOutput "WHATIF: Would switch license for $UserPrincipalName" "Yellow"
+            }
             return $true
         }
         
@@ -429,15 +436,20 @@ function Main {
             Write-ColorOutput "License switch cancelled by user." "Yellow"
             return
         }
+    }    # Perform license switch
+    if ($WhatIf) {
+        Write-ColorOutput "`nStarting license switch simulation (WhatIf mode)..." "Yellow"
+        if ($VerbosePreference -ne 'Continue') {
+            Write-ColorOutput "Processing $($usersWithExpiringLicense.Count) users silently (use -Verbose to see individual users)..." "Gray"
+        }
+    } else {
+        Write-ColorOutput "`nStarting license switch process..." "Yellow"
     }
-    
-    # Perform license switch
-    Write-ColorOutput "`nStarting license switch process..." "Yellow"
     $successCount = 0
     $failureCount = 0
     
     foreach ($user in $usersWithExpiringLicense) {
-        $result = Switch-UserLicense -UserId $user.Id -UserPrincipalName $user.UserPrincipalName -ExpiringLicenseSkuId $expiringLicenseInfo.SkuId -NewLicenseSkuId $newLicenseInfo.SkuId -WhatIfMode $WhatIf
+        $result = Switch-UserLicense -UserId $user.Id -UserPrincipalName $user.UserPrincipalName -ExpiringLicenseSkuId $expiringLicenseInfo.SkuId -NewLicenseSkuId $newLicenseInfo.SkuId -WhatIfMode $WhatIf -VerboseMode ($VerbosePreference -eq 'Continue')
         
         if ($result) {
             $successCount++
