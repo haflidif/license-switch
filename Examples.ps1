@@ -41,6 +41,17 @@
 # Detailed preview showing individual user processing
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf -Verbose
 
+# === Multi-Tenant Preview Examples ===
+
+# Preview in specific tenant using Tenant ID
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012" -WhatIf
+
+# Preview in specific tenant using domain  
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com" -WhatIf
+
+# Preview with SKU IDs in specific tenant
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01" -TenantId "12345678-1234-1234-1234-123456789012" -WhatIf
+
 # ================================================
 # STEP 3: Execute License Switches  
 # ================================================
@@ -52,6 +63,17 @@
 
 # Example 2: Execute using SKU IDs (great for automated scripts)
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01"
+
+# === Multi-Tenant Execution ===
+
+# Execute in specific tenant using Tenant ID
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012"
+
+# Execute in specific tenant using domain
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com"
+
+# Execute using SKU IDs in specific tenant
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01" -TenantId "12345678-1234-1234-1234-123456789012"
 
 # === Verbose Execution (Detailed Output) ===
 

@@ -16,6 +16,10 @@
     Path for the export CSV file (optional)
 .PARAMETER WhatIf
     Preview changes without making them
+.PARAMETER TenantId
+    The Azure AD Tenant ID (GUID) to connect to. Optional - uses default tenant if not specified.
+.PARAMETER TenantDomain
+    The Azure AD Tenant domain (e.g., contoso.onmicrosoft.com) to connect to. Alternative to TenantId.
 .EXAMPLE
     # Using SkuPartNumber (user-friendly names) - Default method
     .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf
@@ -27,6 +31,14 @@
 .EXAMPLE
     # Using verbose mode to see detailed processing (shows individual user messages)
     .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf -Verbose
+
+.EXAMPLE
+    # Multi-tenant: Connect to specific tenant using Tenant ID
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012" -WhatIf
+
+.EXAMPLE
+    # Multi-tenant: Connect to specific tenant using domain
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com" -WhatIf
 #>
 
 [CmdletBinding(DefaultParameterSetName = 'BySkuPartNumber')]
@@ -47,7 +59,13 @@ param(
     [string]$ExportPath = ".\LicenseSwitchExport_$(Get-Date -Format 'yyyyMMdd_HHmmss').csv",
     
     [Parameter(Mandatory = $false)]
-    [switch]$WhatIf
+    [switch]$WhatIf,
+    
+    [Parameter(Mandatory = $false)]
+    [string]$TenantId,
+    
+    [Parameter(Mandatory = $false)]
+    [string]$TenantDomain
 )
 
 # Function to write colored output
@@ -61,6 +79,11 @@ function Write-ColorOutput {
 
 # Function to connect to Microsoft Graph
 function Connect-ToMicrosoftGraph {
+    param(
+        [string]$TenantId,
+        [string]$TenantDomain
+    )
+    
     try {
         Write-ColorOutput "Connecting to Microsoft Graph..." "Yellow"
         
@@ -75,10 +98,36 @@ function Connect-ToMicrosoftGraph {
         Import-Module Microsoft.Graph.Users
         Import-Module Microsoft.Graph.Identity.DirectoryManagement
         
-        # Connect with required scopes
-        Connect-MgGraph -Scopes "User.ReadWrite.All", "Directory.ReadWrite.All", "Organization.Read.All"
+        # Prepare connection parameters
+        $connectionParams = @{
+            Scopes = @("User.ReadWrite.All", "Directory.ReadWrite.All", "Organization.Read.All")
+        }
         
-        Write-ColorOutput "Successfully connected to Microsoft Graph" "Green"
+        # Add tenant specification if provided
+        if ($TenantId) {
+            $connectionParams.TenantId = $TenantId
+            Write-ColorOutput "Connecting to specific tenant ID: $TenantId" "Cyan"
+        }
+        elseif ($TenantDomain) {
+            $connectionParams.TenantId = $TenantDomain
+            Write-ColorOutput "Connecting to specific tenant domain: $TenantDomain" "Cyan"
+        }
+        else {
+            Write-ColorOutput "Connecting to default tenant..." "Cyan"
+        }
+        
+        # Connect with required scopes
+        Connect-MgGraph @connectionParams
+        
+        # Get current context to show which tenant we're connected to
+        $context = Get-MgContext
+        if ($context) {
+            Write-ColorOutput "Successfully connected to Microsoft Graph" "Green"
+            Write-ColorOutput "Tenant ID: $($context.TenantId)" "White"
+            Write-ColorOutput "Account: $($context.Account)" "White"
+            Write-ColorOutput "Environment: $($context.Environment)" "White"
+        }
+        
         return $true
     }
     catch {
@@ -362,11 +411,10 @@ function Main {
         $newInput = $NewLicenseSkuId
         $inputType = "SkuId"
     }
-    
-    Write-ColorOutput ""
+      Write-ColorOutput ""
     
     # Connect to Microsoft Graph
-    if (!(Connect-ToMicrosoftGraph)) {
+    if (!(Connect-ToMicrosoftGraph -TenantId $TenantId -TenantDomain $TenantDomain)) {
         Write-ColorOutput "Exiting due to connection failure." "Red"
         return
     }

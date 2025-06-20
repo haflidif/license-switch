@@ -37,6 +37,9 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 | `ExportPath` | No | Path for CSV export | `"C:\Reports\export.csv"` |
 | `WhatIf` | No | Preview changes without executing | `-WhatIf` |
 | `Verbose` | No | Show detailed processing output | `-Verbose` |
+| **Multi-Tenant Parameters** | | | |
+| `TenantId` | No | Azure AD Tenant ID (GUID) to connect to | `"12345678-1234-1234-1234-123456789012"` |
+| `TenantDomain` | No | Azure AD Tenant domain to connect to | `"contoso.onmicrosoft.com"` |
 
 *Note: Use either SkuPartNumber parameters OR SkuId parameters, not both.*
 
@@ -68,6 +71,15 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01" -WhatIf
 ```
 
+**Multi-Tenant Preview**
+```powershell
+# Preview in specific tenant using Tenant ID
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012" -WhatIf
+
+# Preview in specific tenant using domain
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com" -WhatIf
+```
+
 ### ⚡ 3. Execute License Switch
 
 **Standard Execution**
@@ -77,6 +89,15 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 
 # Using SKU IDs for automation scenarios
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01"
+```
+
+**Multi-Tenant Execution**
+```powershell
+# Execute in specific tenant using Tenant ID
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012"
+
+# Execute in specific tenant using domain
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com"
 ```
 
 **With Verbose Output**
