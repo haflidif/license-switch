@@ -20,6 +20,10 @@
     The Azure AD Tenant ID (GUID) to connect to. Optional - uses default tenant if not specified.
 .PARAMETER TenantDomain
     The Azure AD Tenant domain (e.g., contoso.onmicrosoft.com) to connect to. Alternative to TenantId.
+.PARAMETER TestMode
+    Enable test mode to process only a limited number of users for validation before full deployment.
+.PARAMETER MaxTestUsers
+    Maximum number of users to process in test mode (default: 5). Only effective when TestMode is enabled.
 .EXAMPLE
     # Using SkuPartNumber (user-friendly names) - Default method
     .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf
@@ -39,6 +43,18 @@
 .EXAMPLE
     # Multi-tenant: Connect to specific tenant using domain
     .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com" -WhatIf
+
+.EXAMPLE
+    # Test Mode: Validate functionality on only 5 users before full deployment
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -WhatIf
+
+.EXAMPLE
+    # Test Mode: Test with specific number of users (e.g., 10 users)
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 10 -WhatIf
+
+.EXAMPLE
+    # Test Mode: Actual execution on limited users for validation
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 3
 #>
 
 [CmdletBinding(DefaultParameterSetName = 'BySkuPartNumber')]
@@ -60,12 +76,17 @@ param(
     
     [Parameter(Mandatory = $false)]
     [switch]$WhatIf,
-    
-    [Parameter(Mandatory = $false)]
+      [Parameter(Mandatory = $false)]
     [string]$TenantId,
     
     [Parameter(Mandatory = $false)]
-    [string]$TenantDomain
+    [string]$TenantDomain,
+    
+    [Parameter(Mandatory = $false)]
+    [switch]$TestMode,
+    
+    [Parameter(Mandatory = $false)]
+    [int]$MaxTestUsers = 5
 )
 
 # Function to write colored output
@@ -454,27 +475,43 @@ function Main {
         Write-ColorOutput "  • There was a search timeout or error" "Gray"
         return
     }
+      Write-ColorOutput "✅ Found $($usersWithExpiringLicense.Count) users with the expiring license" "Green"
     
-    Write-ColorOutput "✅ Found $($usersWithExpiringLicense.Count) users with the expiring license" "Green"
-    
-    # Show sample of users found (for verification)
-    if ($usersWithExpiringLicense.Count -le 5) {
-        Write-ColorOutput "`nUsers found:" "White"
-        $usersWithExpiringLicense | ForEach-Object { Write-ColorOutput "  • $($_.DisplayName) ($($_.UserPrincipalName))" "Gray" }
-    } else {
-        Write-ColorOutput "`nSample of users found:" "White"
-        $usersWithExpiringLicense | Select-Object -First 3 | ForEach-Object { Write-ColorOutput "  • $($_.DisplayName) ($($_.UserPrincipalName))" "Gray" }
-        Write-ColorOutput "  ... and $($usersWithExpiringLicense.Count - 3) more users" "Gray"
+    # Apply test mode filtering if enabled
+    $usersToProcess = $usersWithExpiringLicense
+    if ($TestMode) {
+        Write-ColorOutput "`n🧪 TEST MODE ENABLED" "Yellow"
+        Write-ColorOutput "   Limiting processing to $MaxTestUsers users for validation" "Yellow"
+        $usersToProcess = $usersWithExpiringLicense | Select-Object -First $MaxTestUsers
+        Write-ColorOutput "   Original user count: $($usersWithExpiringLicense.Count)" "Gray"
+        Write-ColorOutput "   Test mode user count: $($usersToProcess.Count)" "Gray"
+        if ($usersToProcess.Count -lt $usersWithExpiringLicense.Count) {
+            Write-ColorOutput "   ⚠️  This is a TEST RUN - only processing $($usersToProcess.Count) of $($usersWithExpiringLicense.Count) users!" "Yellow"
+        }
     }
     
-    # Export users to CSV
+    # Show sample of users found (for verification)
+    if ($usersToProcess.Count -le 5) {
+        Write-ColorOutput "`nUsers $(if($TestMode){'in test batch'}else{'found'}):" "White"
+        $usersToProcess | ForEach-Object { Write-ColorOutput "  • $($_.DisplayName) ($($_.UserPrincipalName))" "Gray" }
+    } else {
+        Write-ColorOutput "`nSample of users $(if($TestMode){'in test batch'}else{'found'}):" "White"
+        $usersToProcess | Select-Object -First 3 | ForEach-Object { Write-ColorOutput "  • $($_.DisplayName) ($($_.UserPrincipalName))" "Gray" }
+        Write-ColorOutput "  ... and $($usersToProcess.Count - 3) more users" "Gray"
+    }
+      # Export users to CSV
     Write-ColorOutput "`n=== Export Phase ===" "Cyan"
-    if (!(Export-UsersToCSV -Users $usersWithExpiringLicense -FilePath $ExportPath -LicenseSku $expiringLicenseInfo.SkuPartNumber)) {
+    if (!(Export-UsersToCSV -Users $usersToProcess -FilePath $ExportPath -LicenseSku $expiringLicenseInfo.SkuPartNumber)) {
         Write-ColorOutput "Warning: Failed to export users, but continuing with license switch..." "Yellow"
     }
     
     # Confirm license switch
-    Write-ColorOutput "`nReady to switch licenses for $($usersWithExpiringLicense.Count) users" "Yellow"
+    if ($TestMode) {
+        Write-ColorOutput "`n🧪 Ready to switch licenses for $($usersToProcess.Count) users (TEST MODE)" "Yellow"
+        Write-ColorOutput "   This is a validation run on a subset of users!" "Yellow"
+    } else {
+        Write-ColorOutput "`nReady to switch licenses for $($usersToProcess.Count) users" "Yellow"
+    }
     Write-ColorOutput "From: $($expiringLicenseInfo.SkuPartNumber)" "White"
     Write-ColorOutput "To: $($newLicenseInfo.SkuPartNumber)" "White"
     
@@ -486,17 +523,25 @@ function Main {
         }
     }    # Perform license switch
     if ($WhatIf) {
-        Write-ColorOutput "`nStarting license switch simulation (WhatIf mode)..." "Yellow"
+        if ($TestMode) {
+            Write-ColorOutput "`nStarting license switch simulation (WhatIf + Test mode)..." "Yellow"
+        } else {
+            Write-ColorOutput "`nStarting license switch simulation (WhatIf mode)..." "Yellow"
+        }
         if ($VerbosePreference -ne 'Continue') {
-            Write-ColorOutput "Processing $($usersWithExpiringLicense.Count) users silently (use -Verbose to see individual users)..." "Gray"
+            Write-ColorOutput "Processing $($usersToProcess.Count) users silently (use -Verbose to see individual users)..." "Gray"
         }
     } else {
-        Write-ColorOutput "`nStarting license switch process..." "Yellow"
+        if ($TestMode) {
+            Write-ColorOutput "`nStarting license switch process (TEST MODE - Limited Users)..." "Yellow"
+        } else {
+            Write-ColorOutput "`nStarting license switch process..." "Yellow"
+        }
     }
     $successCount = 0
     $failureCount = 0
     
-    foreach ($user in $usersWithExpiringLicense) {
+    foreach ($user in $usersToProcess) {
         $result = Switch-UserLicense -UserId $user.Id -UserPrincipalName $user.UserPrincipalName -ExpiringLicenseSkuId $expiringLicenseInfo.SkuId -NewLicenseSkuId $newLicenseInfo.SkuId -WhatIfMode $WhatIf -VerboseMode ($VerbosePreference -eq 'Continue')
         
         if ($result) {
@@ -508,12 +553,20 @@ function Main {
         # Add a small delay to avoid throttling
         Start-Sleep -Milliseconds 100
     }
-    
-    # Summary
+      # Summary
     Write-ColorOutput "`n=== License Switch Summary ===" "Cyan"
-    Write-ColorOutput "Total Users Processed: $($usersWithExpiringLicense.Count)" "White"
-    Write-ColorOutput "Successful: $successCount" "Green"
-    Write-ColorOutput "Failed: $failureCount" "Red"
+    if ($TestMode) {
+        Write-ColorOutput "🧪 TEST MODE RESULTS:" "Yellow"
+        Write-ColorOutput "Total Users Available: $($usersWithExpiringLicense.Count)" "White"
+        Write-ColorOutput "Test Users Processed: $($usersToProcess.Count)" "White"
+        Write-ColorOutput "Successful: $successCount" "Green"
+        Write-ColorOutput "Failed: $failureCount" "Red"
+        Write-ColorOutput "`n⚠️  This was a limited test run. To process all $($usersWithExpiringLicense.Count) users, remove -TestMode parameter." "Yellow"
+    } else {
+        Write-ColorOutput "Total Users Processed: $($usersToProcess.Count)" "White"
+        Write-ColorOutput "Successful: $successCount" "Green"
+        Write-ColorOutput "Failed: $failureCount" "Red"
+    }
     Write-ColorOutput "Export File: $ExportPath" "White"
     Write-ColorOutput "End Time: $(Get-Date)" "Gray"
     

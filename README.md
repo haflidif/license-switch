@@ -5,6 +5,7 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 ## 🚀 Enhanced Features (Latest Version)
 
 - ✅ **Dual Input Support**: Use either SKU Part Numbers (user-friendly) or SKU IDs (GUIDs)
+- ✅ **Test Mode**: Validate functionality on limited users before full deployment
 - ✅ **Optimized Performance**: Server-side filtering for fast user discovery in large tenants
 - ✅ **Microsoft Graph Integration**: Automatically connects with proper scopes
 - ✅ **License Validation**: Validates both source and target licenses exist and are available
@@ -37,6 +38,9 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 | `ExportPath` | No | Path for CSV export | `"C:\Reports\export.csv"` |
 | `WhatIf` | No | Preview changes without executing | `-WhatIf` |
 | `Verbose` | No | Show detailed processing output | `-Verbose` |
+| **Test Mode Parameters** | | | |
+| `TestMode` | No | Enable test mode for limited user processing | `-TestMode` |
+| `MaxTestUsers` | No | Max users to process in test mode (default: 5) | `-MaxTestUsers 10` |
 | **Multi-Tenant Parameters** | | | |
 | `TenantId` | No | Azure AD Tenant ID (GUID) to connect to | `"12345678-1234-1234-1234-123456789012"` |
 | `TenantDomain` | No | Azure AD Tenant domain to connect to | `"contoso.onmicrosoft.com"` |
@@ -105,6 +109,41 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 # Show detailed processing for each user
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -Verbose
 ```
+
+### 🧪 3.5. Test Mode (HIGHLY RECOMMENDED for Large Environments)
+
+**Why Use Test Mode?**
+- Perfect for validating functionality before processing thousands of users
+- Allows you to test the exact license switching process on a small subset
+- Identifies potential issues early without affecting the entire user base
+- Provides confidence before running on 7K+ users
+
+**Test Mode with WhatIf (Preview Only)**
+```powershell
+# Test with default 5 users (safest approach)
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -WhatIf
+
+# Test with specific number of users (10 users preview)
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 10 -WhatIf
+
+# Test Mode in specific tenant
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012" -TestMode -WhatIf
+```
+
+**Test Mode with Actual Execution (Recommended Validation)**
+```powershell
+# Execute test with 3 users (recommended for initial validation)
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 3
+
+# Execute test with verbose output for detailed validation
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 5 -Verbose
+```
+
+**Test Mode Parameters**
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `TestMode` | Off | Enables test mode processing |
+| `MaxTestUsers` | 5 | Maximum users to process in test mode |
 
 ### 📁 4. Custom Export Path
 ```powershell

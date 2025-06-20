@@ -53,6 +53,37 @@
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01" -TenantId "12345678-1234-1234-1234-123456789012" -WhatIf
 
 # ================================================
+# STEP 2.5: Test Mode (NEW!) - HIGHLY RECOMMENDED  
+# ================================================
+
+# === Test Mode for Large Environments ===
+# Perfect for validating functionality before processing thousands of users!
+
+# Test with default 5 users (safest approach)
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -WhatIf
+
+# Test with specific number of users (10 users preview)
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 10 -WhatIf
+
+# Test Mode with SKU IDs (automation testing)
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSkuId "18a4bd3f-0b5b-4887-b04f-61dd0ee15f5e" -NewLicenseSkuId "7e31c0d9-9551-471d-836f-32ee72be4a01" -TestMode -MaxTestUsers 3 -WhatIf
+
+# Test Mode in specific tenant
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantId "12345678-1234-1234-1234-123456789012" -TestMode -WhatIf
+
+# === Actual Test Execution (Limited Users) ===
+# Execute the license switch on a small subset to validate functionality
+
+# Execute test with 3 users (recommended for initial validation)
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 3
+
+# Execute test with verbose output for detailed validation
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 5 -Verbose
+
+# Execute test in specific tenant with 2 users
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com" -TestMode -MaxTestUsers 2
+
+# ================================================
 # STEP 3: Execute License Switches  
 # ================================================
 
