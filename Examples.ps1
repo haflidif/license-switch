@@ -83,6 +83,15 @@
 # Execute test in specific tenant with 2 users
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TenantDomain "contoso.onmicrosoft.com" -TestMode -MaxTestUsers 2
 
+# === Safe Behavior: Requested Users > Available Users ===
+# When you specify more test users than actually exist, it gracefully uses all available users
+
+# If only 100 users exist but you request 120, it will test all 100 users (safe behavior)
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 120 -WhatIf
+
+# Large number for "test all available users" approach
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 1000 -WhatIf
+
 # ================================================
 # STEP 3: Execute License Switches  
 # ================================================

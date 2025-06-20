@@ -24,6 +24,7 @@
     Enable test mode to process only a limited number of users for validation before full deployment.
 .PARAMETER MaxTestUsers
     Maximum number of users to process in test mode (default: 5). Only effective when TestMode is enabled.
+    If the specified number is higher than available users, all available users will be processed.
 .EXAMPLE
     # Using SkuPartNumber (user-friendly names) - Default method
     .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -WhatIf
@@ -55,6 +56,10 @@
 .EXAMPLE
     # Test Mode: Actual execution on limited users for validation
     .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 3
+
+.EXAMPLE
+    # Test Mode: Handle case where requested users > available users (safe behavior)
+    .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 1000
 #>
 
 [CmdletBinding(DefaultParameterSetName = 'BySkuPartNumber')]
@@ -476,17 +481,29 @@ function Main {
         return
     }
       Write-ColorOutput "✅ Found $($usersWithExpiringLicense.Count) users with the expiring license" "Green"
-    
-    # Apply test mode filtering if enabled
+      # Apply test mode filtering if enabled
     $usersToProcess = $usersWithExpiringLicense
     if ($TestMode) {
         Write-ColorOutput "`n🧪 TEST MODE ENABLED" "Yellow"
-        Write-ColorOutput "   Limiting processing to $MaxTestUsers users for validation" "Yellow"
-        $usersToProcess = $usersWithExpiringLicense | Select-Object -First $MaxTestUsers
+        
+        # Calculate actual test users (handle case where MaxTestUsers > available users)
+        $actualTestUsers = [Math]::Min($MaxTestUsers, $usersWithExpiringLicense.Count)
+        
+        if ($MaxTestUsers -gt $usersWithExpiringLicense.Count) {
+            Write-ColorOutput "   Requested $MaxTestUsers test users, but only $($usersWithExpiringLicense.Count) users available" "Yellow"
+            Write-ColorOutput "   Using all $($usersWithExpiringLicense.Count) available users for testing" "Yellow"
+        } else {
+            Write-ColorOutput "   Limiting processing to $actualTestUsers users for validation" "Yellow"
+        }
+        
+        $usersToProcess = $usersWithExpiringLicense | Select-Object -First $actualTestUsers
         Write-ColorOutput "   Original user count: $($usersWithExpiringLicense.Count)" "Gray"
         Write-ColorOutput "   Test mode user count: $($usersToProcess.Count)" "Gray"
+        
         if ($usersToProcess.Count -lt $usersWithExpiringLicense.Count) {
             Write-ColorOutput "   ⚠️  This is a TEST RUN - only processing $($usersToProcess.Count) of $($usersWithExpiringLicense.Count) users!" "Yellow"
+        } else {
+            Write-ColorOutput "   ⚠️  This is a TEST RUN - processing ALL $($usersToProcess.Count) available users!" "Yellow"
         }
     }
     

@@ -137,13 +137,16 @@ A comprehensive PowerShell script for bulk switching Office 365 licenses. This s
 
 # Execute test with verbose output for detailed validation
 .\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 5 -Verbose
+
+# Safe behavior: If you request more users than available, it uses all available users
+.\Switch-Office365Licenses.ps1 -ExpiringLicenseSku "Microsoft_365_E5_(no_Teams)" -NewLicenseSku "Microsoft_Teams_Enterprise_New" -TestMode -MaxTestUsers 1000 -WhatIf
 ```
 
 **Test Mode Parameters**
 | Parameter | Default | Description |
 |-----------|---------|-------------|
 | `TestMode` | Off | Enables test mode processing |
-| `MaxTestUsers` | 5 | Maximum users to process in test mode |
+| `MaxTestUsers` | 5 | Maximum users to process in test mode. **If higher than available users, all available users are processed safely.** |
 
 ### 📁 4. Custom Export Path
 ```powershell
