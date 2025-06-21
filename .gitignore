@@ -1,3 +1,6 @@
 # Ignore all csv files created by the script, to prevent them from being committed
 # This is useful for keeping the repository clean and avoiding committing temporary or output files.
 *.csv
+
+# Ignore Git history cleanup script
+remove-files-from-history.ps1
